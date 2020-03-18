@@ -1,0 +1,11 @@
+
+
+.textarea {
+    border: none;
+    resize: none;
+    min-height: 30px;
+}
+
+.indexZ {
+    z-index: 0;
+}
