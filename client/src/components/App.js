@@ -1,15 +1,20 @@
 import React from 'react';
-import {BrowserRouter, Route, } from "react-router-dom";
+import {BrowserRouter, Route, Switch } from "react-router-dom";
 import jwt_decode from "jwt-decode";
 import setAuthToken from "../utils/setAuthToken";
 import { setCurrentUser, logoutUser } from "../actions/authActions";
 import { Provider } from "react-redux";
 import store from "../store";
 import Landing from "./pages/Landing";
+import Majors from "./pages/Majors";
+import CourseCatalog from "./pages/CourseCatalog";
+import Events from "./pages/Events";
+
 import Login from "./pages/Login";
 import Chatbot from "./chatbot/Chatbot";
 //Do e perdoresh per gjerat private
-import PrivateRoute from "../components/private-route/PrivateRoute";
+//import PrivateRoute from "../components/private-route/PrivateRoute";
+import Header from "./Header";
 
 // Check for token to keep user logged in
 if (localStorage.jwtToken) {
@@ -35,12 +40,20 @@ const App = () => {
                 <BrowserRouter>
                     <div className="App">
                         <Chatbot/>
-                        <Route exact path="/" component={Landing}/>
+                        <Switch>
                         <Route exact path="/Login" component={Login}/>
+                        <Header/>
+                        </Switch>
+                        <Switch>
+                        <Route exact path="/" component={Landing}/>
+                        <Route exact path="/Majors" component={Majors}/>
+                        <Route exact path="/CourseCatalog" component={CourseCatalog}/>
+                        <Route exact path="/Events" component={Events}/>
+                        </Switch>
                     </div>
                 </BrowserRouter>
             </Provider>
         )
-}
+};
 
 export default App;

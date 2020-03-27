@@ -3,6 +3,8 @@ import axios from "axios/index";
 import Cookies from 'universal-cookie';
 import { v4 as uuid } from 'uuid';
 import Message from './Message';
+import '../../components/style_css.css';
+
 const Validator = require("validator");
 
 const cookies = new Cookies();
@@ -40,7 +42,7 @@ class Chatbot extends Component {
                     text: text
                 }
             }
-        }
+        };
         this.setState({ messages: [...this.state.messages, says]});
 
         try {
@@ -50,7 +52,7 @@ class Chatbot extends Component {
                 says = {
                     speaks: 'bot',
                     msg: msg
-                }
+                };
 
                 this.setState({ messages: [...this.state.messages, says]});
             }
@@ -59,7 +61,7 @@ class Chatbot extends Component {
                 speaks: 'bot',
                 msg: {
                     text : {
-                        text: "I'm having troubles. I need to terminate. will be back later"
+                        text: "I'm having troubles. Check your internet connection..."
                     }
                 }
             };
@@ -83,14 +85,14 @@ class Chatbot extends Component {
                 let says = {
                     speaks: 'bot',
                     msg: msg
-                }
+                };
                 this.setState({ messages: [...this.state.messages, says]});
             }
         } catch (e) {
             let says = {
                 msg: {
                     text : {
-                        text: "I'm having troubles. I need to terminate. will be back later"
+                        text: "I'm having troubles. Check your internet connection..."
                     }
                 }
             };
@@ -145,48 +147,41 @@ class Chatbot extends Component {
     }
 
     render() {
-
         if(this.state.showBot) {
             return (
-                <div style={{ minHeight: 500, maxHeight: 500, width:400, position: 'absolute', bottom: 0, right: 0, border: '1px solid lightgray'}}>
-                    <nav>
-                        <div className="nav-wrapper">
-                            <div className="brand-logo">ChatBot</div>
-                            <ul id="nav-mobile" className="right hide-on-med-and-down">
-                                <li><a href="/" onClick={this.hide}>Close</a></li>
-                            </ul>
-                        </div>
-                    </nav>
+                    <div className="chatbotstyle" style={{ minHeight: 200, maxHeight: 500, minWidth:250, right: 20,     position: 'fixed', bottom: 0, border: '1px solid lightgray'}}>
+                        <nav>
+                            <div className="nav-wrapper red darken-1">
+                                <div className="brand-logo">ChatBot</div>
+                                <ul id="nav-mobile" className="right hide-on-med-and-down">
+                                    <li><a href="/" onClick={this.hide}>Close</a></li>
+                                </ul>
+                            </div>
+                        </nav>
 
-                        <div id="chatbot"  style={{ minHeight: 388, maxHeight: 388, width:'100%', overflow: 'auto'}}>
+                        <div style={{ minHeight: 388, maxHeight: 388, width:'100%', overflow: 'auto', backgroundColor: "white"}}>
 
                             {this.renderMessages(this.state.messages)}
                             <div ref={(el) => { this.messagesEnd = el; }}
                                  style={{ float:"left", clear: "both" }}>
                             </div>
                         </div>
-                        <div className=" col s12" >
+                        <div className=" col s12" style={{backgroundColor: "white"}}>
                             <input name="input" style={{margin: 0, paddingLeft: '1%', paddingRight: '1%', width: '98%'}} ref={(input) => { this.talkInput = input; }} placeholder="type a message:"  onKeyPress={this._handleInputKeyPress} id="user_says" type="text"/>
                         </div>
 
                     </div>
             );
         } else {
-
             return(
-                <div style={{ minHeight: 40, maxHeight: 500, width:400, position: 'absolute', bottom: 0, right: 0, border: '1px solid lightgray'}}>
-                    <nav>
-                        <div className="nav-wrapper">
-                            <div className="brand-logo">ChatBot</div>
-                            <ul id="nav-mobile" className="right hide-on-med-and-down">
-                                <li><a href="/" onClick={this.show}>Show</a></li>
-                            </ul>
-                        </div>
-                    </nav>
-                    <div ref={(el) => { this.messagesEnd = el; }}
+                    <div className="btn-floating btn-large waves-effect waves-light red indexZ"
+                         onClick={this.show}
+                         style={{ minHeight: 70, maxHeight: 70, width:70, position: 'fixed', bottom: 40, right: 50, border: '1px solid lightgray'}}>
+                        <i className="fas fa-comments"/>
+                        <div ref={(el) => { this.messagesEnd = el; }}
                          style={{ float:"left", clear: "both" }}>
                     </div>
-                </div>
+            </div>
             );
         }
     }

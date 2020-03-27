@@ -1,0 +1,28 @@
+const mongoose = require("mongoose");
+const { Schema } = mongoose;
+
+// Create Schema
+const ClassSchema = new Schema({
+    name: {
+        type: String,
+        required: true
+    },
+
+    class_time: [{
+            type: String,
+            required: true
+    }],
+
+    classroom:{
+        type: String,
+        required: true
+    },
+
+    course: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'courses'
+    },
+
+});
+
+module.exports = User = mongoose.model("classes", ClassSchema);

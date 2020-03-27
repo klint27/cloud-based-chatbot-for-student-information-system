@@ -15,4 +15,4 @@ module.exports = app => {
         res.send(responses[0].queryResult);
     });
 
-}
+};

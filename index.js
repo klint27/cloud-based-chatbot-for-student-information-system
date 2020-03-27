@@ -5,6 +5,8 @@ const mongoose = require('mongoose');
 //Required for login
 const passport = require("passport");
 const users = require("./routes/users");
+const data = require("./routes/data");
+
 
 const app = express();
 
@@ -17,7 +19,7 @@ app.use(
 app.use(bodyParser.json());
 
 //Connect to database
-mongoose.connect(config.mongoURI, {useNewUrlParser: true}).then(() => console.log("MongoDB successfully connected"));
+mongoose.connect(config.mongoURI, {useUnifiedTopology: true, useNewUrlParser: true}).then(() => console.log("MongoDB successfully connected"));
 
 //Connection to dialogFlow
 require('./routes/dialogFlowRoutes')(app);
@@ -27,8 +29,12 @@ app.use(passport.initialize());
 // Passport config
 require("./config/passport")(passport);
 // Routes to user authentication
-require('./routes/users')(app);
+users(app);
 
+//Routes to data access
+data(app);
+
+//Values change between development and production
 if (process.env.NODE_ENV === 'production') {
     // js and css files
     app.use(express.static('client/build'));
@@ -44,4 +50,3 @@ if (process.env.NODE_ENV === 'production') {
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT);
-

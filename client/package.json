@@ -8,8 +8,9 @@
     "@testing-library/user-event": "^7.2.1",
     "axios": "^0.19.2",
     "classnames": "^2.2.6",
+    "dateformat": "^3.0.3",
     "jwt-decode": "^2.2.0",
-    "materialize-css": "^1.0.0",
+    "materialize-css": "^1.0.0-rc.2",
     "mdbreact": "^4.25.3",
     "react": "^16.13.0",
     "react-dom": "^16.13.0",
@@ -42,5 +43,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "prop-types": "^15.7.2"
   }
 }

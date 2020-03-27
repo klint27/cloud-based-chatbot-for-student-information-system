@@ -3,7 +3,6 @@ import {Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { loginUser } from "../../actions/authActions";
-import classnames from "classnames";
 import {
     MDBBtn,
     MDBCard,
@@ -13,8 +12,10 @@ import {
     MDBContainer,
     MDBIcon,
     MDBModalFooter,
-    MDBRow
+    MDBRow,
+    MDBInput
 } from "mdbreact";
+import '../style_css.css';
 
 class Login extends Component {
 
@@ -59,7 +60,7 @@ class Login extends Component {
         const { errors } = this.state;
 
         return (
-            <div className="d-flex justify-content-center"
+            <div className="d-flex justify-content-center loginstyle"
                  style={{
                      backgroundColor: "gray",
                      top: '0', bottom: '0', left: '0', right: '0', position: 'absolute',
@@ -71,57 +72,38 @@ class Login extends Component {
                             <MDBCard>
                                 <form noValidate onSubmit={this.onSubmit}>
                                 <MDBCardBody>
-                                    <MDBCardHeader className="form-header warm-flame-gradient rounded">
+                                    <MDBCardHeader className="form-header gradient  rounded" style={{backgroundColor:"#fb4555"}}>
                                         <h3 className="my-3">
                                             <MDBIcon icon="lock"/> Login:
                                         </h3>
                                     </MDBCardHeader>
-                                    <label
-                                        htmlFor="defaultFormEmailEx"
-                                        className="grey-text font-weight-light"
-                                    >
-                                        Your email
-                                    </label>
                                     <span className="red-text">
                                         {errors.email}
                                         {errors.emailnotfound}
                                     </span>
-                                    <input
+                                    <MDBInput label="Your Email"
+                                        type="email"
+                                        id="email"
                                         className="form-control"
                                         onChange={this.onChange}
                                         value={this.state.email}
                                         error={errors.email}
-                                        id="email"
-                                        type="email"
-                                        className={classnames("", {
-                                            invalid: errors.email || errors.emailnotfound
-                                        })}
                                     />
-
-                                    <label
-                                        htmlFor="defaultFormPasswordEx"
-                                        className="grey-text font-weight-light"
-                                    >
-                                        Your password
-                                    </label>
                                     <span className="red-text">
                                         {errors.password}
                                         {errors.passwordincorrect}
                                     </span>
-                                    <input
+                                    <MDBInput label="Your password"
                                         className="form-control"
                                         onChange={this.onChange}
                                         value={this.state.password}
                                         error={errors.password}
                                         id="password"
                                         type="password"
-                                        className={classnames("", {
-                                            invalid: errors.password || errors.passwordincorrect
-                                        })}
                                     />
 
                                     <div className="text-center mt-4">
-                                        <MDBBtn color="deep-orange" className="mb-3" type="submit">
+                                        <MDBBtn color="danger" className="mb-3" type="submit">
                                             Login
                                         </MDBBtn>
                                     </div>
@@ -139,9 +121,7 @@ class Login extends Component {
             </div>
         );
     }
-
-
-};
+}
 
 Login.propTypes = {
     loginUser: PropTypes.func.isRequired,

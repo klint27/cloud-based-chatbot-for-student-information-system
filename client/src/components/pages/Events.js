@@ -1,0 +1,63 @@
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import axios from "axios";
+
+const dateFormat = require('dateformat');
+
+
+class Events extends Component {
+
+    constructor() {
+        super();
+        this.state = {
+            posts: [],
+        };
+    }
+
+    componentDidMount() {
+        this.getEvents();
+
+    }
+
+    async getEvents() {
+        axios.post('/api/events', {limit:null})
+            .then((response) => {
+                const data = response.data;
+                this.setState({ posts: data });
+            })
+            .catch(() => {
+                alert('Error retrieving data!!!');
+            });
+    };
+
+    render() {
+        let elements=[];
+        this.state.posts.forEach((event) =>{
+            elements.push(
+                    <div className = "card white" >
+                        <div className = "card-content black-text" >
+                            <span className="card-title">{event.title}</span>
+                            <p>Location: {event.location}</p>
+                            <p>Date: {dateFormat(event.date, "dddd, mmmm dS, yyyy, h:MM TT")}</p>
+                            <p>{event.description}</p>
+                        </div>
+                    </div>
+            )}
+        );
+
+        return (
+            <div className="card col cardwidth">
+                {elements}
+            </div>
+        )
+    }
+}
+
+Events.propTypes = {
+    auth: PropTypes.object.isRequired
+};
+const mapStateToProps = state => ({
+    auth: state.auth
+});
+export default connect(mapStateToProps)(Events);
