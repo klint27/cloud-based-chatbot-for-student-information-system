@@ -9,7 +9,7 @@ import Landing from "./pages/Landing";
 import Majors from "./pages/Majors";
 import CourseCatalog from "./pages/CourseCatalog";
 import Events from "./pages/Events";
-
+import Dashboard from "./pages/Dashboard";
 import Login from "./pages/Login";
 import Chatbot from "./chatbot/Chatbot";
 //Do e perdoresh per gjerat private
@@ -41,14 +41,15 @@ const App = () => {
                     <div className="App">
                         <Chatbot/>
                         <Switch>
-                        <Route exact path="/Login" component={Login}/>
-                        <Header/>
+                            <Route exact path="/Login" component={Login}/>
+                            <Header/>
                         </Switch>
                         <Switch>
-                        <Route exact path="/" component={Landing}/>
-                        <Route exact path="/Majors" component={Majors}/>
-                        <Route exact path="/CourseCatalog" component={CourseCatalog}/>
-                        <Route exact path="/Events" component={Events}/>
+                            <Route exact path="/Dashboard" component={Dashboard}/>
+                            <Route exact path="/" component={Landing}/>
+                            <Route exact path="/Majors" component={Majors}/>
+                            <Route exact path="/CourseCatalog" component={CourseCatalog}/>
+                            <Route exact path="/Events" component={Events}/>
                         </Switch>
                     </div>
                 </BrowserRouter>

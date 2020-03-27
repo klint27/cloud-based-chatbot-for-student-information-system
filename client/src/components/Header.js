@@ -25,6 +25,9 @@ class Header extends Component {
                             </MDBNavbarBrand>
                                 <MDBNavbarNav left >
                                     <MDBNavItem>
+                                        {(this.props.auth.isAuthenticated) && <Link to="Dashboard">Dashbard</Link>}
+                                    </MDBNavItem>
+                                    <MDBNavItem>
                                         <Link to="/">Home</Link>
                                     </MDBNavItem>
                                     <MDBNavItem>
