@@ -12,7 +12,7 @@ const EventSchema = new Schema({
         required: true
     },
     image: {
-        data: Buffer,
+        type: String,
         contentType: String
     },
     date: {

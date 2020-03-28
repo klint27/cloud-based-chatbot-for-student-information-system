@@ -13,7 +13,7 @@ import Dashboard from "./pages/Dashboard";
 import Login from "./pages/Login";
 import Chatbot from "./chatbot/Chatbot";
 //Do e perdoresh per gjerat private
-//import PrivateRoute from "../components/private-route/PrivateRoute";
+import PrivateRoute from "../components/private-route/PrivateRoute";
 import Header from "./Header";
 
 // Check for token to keep user logged in
@@ -45,7 +45,7 @@ const App = () => {
                             <Header/>
                         </Switch>
                         <Switch>
-                            <Route exact path="/Dashboard" component={Dashboard}/>
+                            <PrivateRoute exact path="/Dashboard" component={Dashboard}/>
                             <Route exact path="/" component={Landing}/>
                             <Route exact path="/Majors" component={Majors}/>
                             <Route exact path="/CourseCatalog" component={CourseCatalog}/>

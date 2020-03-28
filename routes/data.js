@@ -7,14 +7,17 @@ const Events = require('../models/Events');
 module.exports = app => {
 
     /*
-    Course.updateMany({"title": {$regex: "MAT"}}, {$set: {"major": mongoose.Types.ObjectId("5e77d81193d22031a4e589f8")}})
-        .then(course => {
-            if (!course) {
-                return res.status(404).json({coursenotfound: "course not found"});
-            }
-            res.json(course);
-          });
-*/
+    app.post('/api/eventupdate', async (req, res) => {
+        Events.update({"title": {$regex: "MAT"}}, {$set: {"image": ''}})
+            .then(course => {
+                if (!course) {
+                    return res.status(404).json({coursenotfound: "course not found"});
+                }
+                res.json(course);
+            });
+    });
+     */
+
 /*
     const newCourse = new event({
         image: {

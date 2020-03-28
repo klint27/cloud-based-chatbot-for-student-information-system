@@ -149,7 +149,7 @@ class Chatbot extends Component {
     render() {
         if(this.state.showBot) {
             return (
-                    <div className="chatbotstyle" style={{ minHeight: 200, maxHeight: 500, minWidth:250, right: 20,     position: 'fixed', bottom: 0, border: '1px solid lightgray'}}>
+                    <div className="chatbotstyle" style={{ minHeight: 200, maxHeight: 500, minWidth:250, right: 20, position: 'fixed', bottom: 0, border: '1px solid lightgray'}}>
                         <nav>
                             <div className="nav-wrapper red darken-1">
                                 <div className="brand-logo">ChatBot</div>

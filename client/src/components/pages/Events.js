@@ -36,10 +36,14 @@ class Events extends Component {
         this.state.posts.forEach((event) =>{
             elements.push(
                     <div className = "card white" >
+                        <div className="card-image" style={{background:"black"}}>
+                            <img className="imagestyle" src={event.image}/>
+                        </div>
                         <div className = "card-content black-text" >
                             <span className="card-title">{event.title}</span>
                             <p>Location: {event.location}</p>
                             <p>Date: {dateFormat(event.date, "dddd, mmmm dS, yyyy, h:MM TT")}</p>
+                            <br/>
                             <p>{event.description}</p>
                         </div>
                     </div>
