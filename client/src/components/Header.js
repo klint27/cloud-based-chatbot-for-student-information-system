@@ -25,7 +25,7 @@ class Header extends Component {
                             </MDBNavbarBrand>
                                 <MDBNavbarNav left >
                                     <MDBNavItem>
-                                        {(this.props.auth.isAuthenticated) && <Link to="Dashboard">Dashbard</Link>}
+                                        {(this.props.auth.isAuthenticated) && <Link to="Dashboard">Dashboard</Link>}
                                     </MDBNavItem>
                                     <MDBNavItem>
                                         <Link to="/">Home</Link>
@@ -42,10 +42,10 @@ class Header extends Component {
                                 </MDBNavbarNav>
                                 <MDBNavbarNav right>
                                     <MDBNavItem>
-                                        {(!this.props.auth.isAuthenticated) && <Link to="/Login">Login</Link>}
+                                        {(!this.props.auth.isAuthenticated) && <Link to="/Login">Log In</Link>}
                                     </MDBNavItem>
                                     <MDBNavItem>
-                                        {(this.props.auth.isAuthenticated) && <Link to="#" onClick={this.onLogoutClick}>Logout</Link>}
+                                        {(this.props.auth.isAuthenticated) && <Link to="#" onClick={this.onLogoutClick}>Log Out</Link>}
                                     </MDBNavItem>
                                 </MDBNavbarNav>
                         </MDBNavbar>

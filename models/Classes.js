@@ -8,16 +8,6 @@ const ClassSchema = new Schema({
         required: true
     },
 
-    class_time: [{
-            type: String,
-            required: true
-    }],
-
-    classroom:{
-        type: String,
-        required: true
-    },
-
     course: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'courses'

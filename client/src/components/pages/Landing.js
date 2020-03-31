@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import axios from "axios";
 import {Link} from "react-router-dom";
+import '../style_css.css';
 
 class Landing extends Component {
 
@@ -20,7 +21,7 @@ class Landing extends Component {
     }
 
     getFront() {
-        axios.post('/api/majors', {select:('name -_id')})
+        axios.post('/api/majors', {select:('name -_id dateline')})
             .then((response) => {
                 const data = response.data;
                 this.setState({ majors: data });
@@ -40,8 +41,6 @@ class Landing extends Component {
     };
 
     render() {
-        console.log(this.state.events);
-
         let event_elements=[];
         this.state.events.forEach(event =>
             event_elements.push(
@@ -66,12 +65,6 @@ class Landing extends Component {
                         <div className = "card-content" style={{height:100}}>
                             <span className="card-title">{major.name}</span>
                         </div>
-                        <div className="card-reveal">
-                            <span className="card-title grey-text text-darken-4">Card Title<i
-                                className="material-icons right">close</i></span>
-                            <p>Here is some more information about this product that is only revealed once clicked
-                                on.</p>
-                        </div>
                     </div>
                 </div>
             )
@@ -92,9 +85,9 @@ class Landing extends Component {
                     {major_elements}
                 </div>
                 <div className="card-action">
-                    <Link to="/Majors">See More Regarding Majors</Link>
+                    <Link to="/Majors">Explore Majors</Link>
                 </div>
-                </div>
+            </div>
         )
     }
 }

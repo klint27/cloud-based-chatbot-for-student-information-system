@@ -8,16 +8,21 @@ const AssignmentSchema = new Schema({
         required: true
     },
 
+    description: {
+        type: String,
+        required: false
+    },
+
     grades: [
         {
            value: {
                type: Number,
                required: false
            },
-           student:[
-               {type: mongoose.Schema.Types.ObjectId,
-               ref: 'users'}
-               ]
+           student: {
+               type: mongoose.Schema.Types.ObjectId,
+               ref: 'users'
+           }
         }
     ],
 

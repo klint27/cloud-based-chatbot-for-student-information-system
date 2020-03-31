@@ -12,8 +12,24 @@
     width: 70%;
 }
 
+.ulwidth{
+    width: 50%;
+}
+
+.textalign{
+    text-align: center;
+}
+
 .cardheight{
     height:300px;
+}
+
+
+.titlefit{
+    height:75%;
+    width:75%;
+    padding:1%;
+    margin: 10px;
 }
 
 .chatbotstyle{

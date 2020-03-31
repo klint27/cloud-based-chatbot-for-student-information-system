@@ -10,9 +10,10 @@ import Majors from "./pages/Majors";
 import CourseCatalog from "./pages/CourseCatalog";
 import Events from "./pages/Events";
 import Dashboard from "./pages/Dashboard";
+import Assignment from "./pages/Assignment";
+import Class from "./pages/Class";
 import Login from "./pages/Login";
 import Chatbot from "./chatbot/Chatbot";
-//Do e perdoresh per gjerat private
 import PrivateRoute from "../components/private-route/PrivateRoute";
 import Header from "./Header";
 

@@ -1,8 +1,11 @@
+const mongoose = require('mongoose');
 const Majors = require('../models/Majors');
 const Courses = require('../models/Courses');
 const Classes = require('../models/Classes');
 const Assignments = require('../models/Assignments');
 const Events = require('../models/Events');
+const User = require('../models/User');
+
 
 module.exports = app => {
 
@@ -80,5 +83,84 @@ module.exports = app => {
             res.json(event);
         });
     });
+
+    app.post('/api/classes&assignments', async (req, res) => {
+
+        const user_id=req.body.user_id;
+
+        let user_classes= [];
+        User.find({
+            _id : mongoose.Types.ObjectId(user_id)
+        }).then( user => {
+            user[0].classes.forEach(element =>
+                user_classes.push(
+                    element
+                )
+            );
+
+            Classes.find(
+                {
+                    _id : { $in : user_classes}
+                }
+            ).then( classes =>{
+                if (!classes) {
+                    return res.status(404).json({classnotfound: "class not found"});
+                }
+
+                let classes_id=[];
+
+                classes.forEach(element =>
+                    classes_id.push(
+                        element._id
+                    )
+                );
+
+                Assignments.find({
+                    class : { $in : classes_id }
+                }).then( assignment =>{
+                    if (!assignment) {
+                        return res.status(404).json({assignmentnotfound: "assignment not found"});
+                    }
+                    res.json({classes: classes, assignments: assignment});
+                });
+
+                /*
+                classes.forEach(element =>
+                console.log(element._id)
+                );
+                 */
+            });
+        });
+    });
+
+    app.post('/api/class', async (req, res) => {
+
+        const class_name = req.body.className;
+
+
+        Classes.find(
+            {
+                name : { $in : class_name}
+            }
+        ).then( classes => {
+            if (!classes) {
+                return res.status(404).json({classnotfound: "class not found"});
+            }
+            Courses.find(
+                {
+                    _id : { $in : classes[0].course}
+
+                }
+            ).select('description -_id').then( course =>{
+                if (!course) {
+                    return res.status(404).json({coursenotfound: "course not found"});
+                }
+                course
+            });
+
+            res.json({class: classes, course: course});
+
+        })
+    })
 
 };
