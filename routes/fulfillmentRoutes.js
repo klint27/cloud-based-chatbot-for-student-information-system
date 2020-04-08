@@ -55,7 +55,7 @@ module.exports = app => {
             let responseText='';
 
             let event = await Events.findOne({title : { $in : agent.parameters.specificEvent}});
-            if(event !== null){
+            if(event !== null && agent.parameters.specificEvent!==''){
 
                 responseText=`It is going to take place on ${dateFormat(event.date, "mmmm dS")} at ${dateFormat(event.date, "h:MM TT")}`
             }else{
@@ -69,7 +69,7 @@ module.exports = app => {
             let responseText = '';
 
             let Major = await Majors.findOne({name : { $in : agent.parameters.specificMajor}});
-            if(Major !== null){
+            if(Major !== null && agent.parameters.specificMajor !==''){
                 responseText=`We do offer ${Major.name}`
             }else{
                 responseText=`I am sorry, but we don't offer this major.`;
@@ -114,7 +114,7 @@ module.exports = app => {
 
             let course = await Courses.findOne({title : { '$regex' :agent.parameters.specificCourse.substr(0,7), '$options' : 'i' }}).select('title -_id');
 
-            if(course !== null){
+            if(course !== null && agent.parameters.specificCourse!==''){
 
                 let responseText = [`This university offers a great course related to ${course.title.substring(8)}.`,
                     `Sure, there is a course regarding ${course.title.substring(8)}.`,
@@ -131,10 +131,6 @@ module.exports = app => {
 
         async function majorOfCourse(agent){
 
-            if(agent.parameters.specificCourse===''){
-                agent.add(`I don't think there is a major related to that.`);
-            }
-            else{
             let course = await Courses.findOne({title : { '$regex' : agent.parameters.specificCourse.substr(0,6), '$options' : 'i' }}).select('major -_id');
 
             let major= await Majors.findOne({_id : { $in : course.major}});
@@ -142,7 +138,7 @@ module.exports = app => {
                 console.log(course);
                 console.log(major);
 
-            if(course !== null){
+            if(course !== null && agent.parameters.specificCourse !==''){
                 let responseText = [`It might be ${major.name}.`,
                     `It should be ${major.name}.`,
                     `I am pretty sure it has to do with ${major.name}.`];
@@ -151,7 +147,7 @@ module.exports = app => {
 
             }else{
                 agent.add(`I don't think there is a major related to that.`);
-            }}
+            }
 
         }
 
