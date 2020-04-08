@@ -170,7 +170,7 @@ class Chatbot extends Component {
 
         if(this.state.showBot) {
             return (
-                    <div className="chatbotstyle hide-on-med-and-down" style={{ minHeight: 470, maxHeight: 500, minWidth:250, right: 20, position: 'fixed', bottom: 0, border: '1px solid lightgray'}}>
+                    <div className="chatbotstyle" style={{ minHeight: 470, maxHeight: 500, minWidth:250, right: 20, position: 'fixed', bottom: 0, border: '1px solid lightgray'}}>
                         <nav>
                             <div className="nav-wrapper red darken-1">
                                 <ul id="nav-mobile" className="left hide-on-med-and-down">
