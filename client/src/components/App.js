@@ -35,6 +35,7 @@ if (localStorage.jwtToken) {
 }
 
 const App = () => {
+    
         return (
             <Provider store={store}>
                 <BrowserRouter>
