@@ -26,9 +26,9 @@ class Header extends Component {
                         <li><Link to="/CourseCatalog">Course Catalog</Link></li>
                         <li><Link to="/Events">Events</Link></li>
                     </ul>
-                    <ul id="nav-mobile" className="right hide-on-med-and-down">
-                        <li>{(!this.props.auth.isAuthenticated) && <Link to="/Login">Log In</Link>}</li>
-                        <li>{(this.props.auth.isAuthenticated) && <Link to="#" onClick={this.onLogoutClick}>Log Out</Link>}</li>
+                    <ul id="nav-mobile" className="right">
+                        {(!this.props.auth.isAuthenticated) && <li><Link to="/Login">Log In</Link></li>}
+                        {(this.props.auth.isAuthenticated) && <li><Link to="#" onClick={this.onLogoutClick}>Log Out</Link></li>}
                     </ul>
                 </div>
             </nav>

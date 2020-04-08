@@ -66,14 +66,13 @@ module.exports = app => {
 
         async function findMajor(agent) {
 
-
             let responseText = '';
 
             let Major = await Majors.findOne({name : { $in : agent.parameters.specificMajor}});
             if(Major !== null){
                 responseText=`We do offer ${Major.name}`
             }else{
-                responseText=`I am sorry, but we don't offer this major`;
+                responseText=`I am sorry, but we don't offer this major.`;
             }
             agent.add(responseText);
         }
