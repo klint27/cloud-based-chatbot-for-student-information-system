@@ -65,7 +65,7 @@ class CourseCatalog extends Component {
         });
 
         return (
-            <div class="card cardwidth">
+            <div className="card cardwidth">
                 <div className="card-tabs">
                 <ul
                         ref={Tabs => {

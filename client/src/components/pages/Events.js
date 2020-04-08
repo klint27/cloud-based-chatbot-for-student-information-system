@@ -8,8 +8,8 @@ const dateFormat = require('dateformat');
 
 class Events extends Component {
 
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
             posts: [],
         };
@@ -17,7 +17,6 @@ class Events extends Component {
 
     componentDidMount() {
         this.getEvents();
-
     }
 
     async getEvents() {
@@ -32,12 +31,13 @@ class Events extends Component {
     };
 
     render() {
+
         let elements=[];
         this.state.posts.forEach((event) =>{
             elements.push(
-                    <div className = "card white" >
+                    <div className = "card white">
                         <div className="card-image" style={{background:"black"}}>
-                            <img className="imagestyle" src={event.image}/>
+                            <img className="imagestyle" src={event.image} alt=""/>
                         </div>
                         <div className = "card-content black-text" >
                             <span className="card-title">{event.title}</span>

@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import axios from "axios";
-import {Link} from "react-router-dom";
 const dateFormat = require('dateformat');
 
 
@@ -43,20 +42,19 @@ class Dashboard extends Component {
 
             let upcoming_assignments=[];
             let past_assignments=[];
-            let posts=[];
             const now = new Date();
-
             this.state.assignments.forEach(element => {
 
-                if(element.class==classes._id){
+                if(element.class===classes._id){
                     let assignmentName= element.name;
 
-                    let assignment_date= new Date(element.dateline);
+                    let assignment_date= Date.parse(element.dateline);
+                    assignment_date=new Date(assignment_date);
 
                     if (assignment_date>now) {
                         upcoming_assignments.push(
                             <li className="collection-item">
-                                <strong>{assignmentName}</strong>
+                                <strong style={{color: '#039be5'}}>{assignmentName}</strong>
                                 <br/><span>Dateline: {dateFormat( element.dateline, " h:MM TT, mmmm dS")}</span>
                             </li>);
                     } else{
@@ -76,11 +74,11 @@ class Dashboard extends Component {
                             <div className="textalign"><strong style={{fontSize:25}}>{className}</strong></div>
                             <div className="row">
                             <ul className="collection with-header ulwidth">
-                                <li className="collection-header textalign" style={{height:40}}><strong style={{fontSize:15}}>Upcomming Assignments</strong></li>
+                                <li className="collection-header textalign" style={{height:50}}><strong style={{fontSize:15}}>Upcomming Assignments</strong></li>
                                 {upcoming_assignments}
                             </ul>
                             <ul className="collection with-header ulwidth">
-                                <li className="collection-header textalign" style={{height:40}}><strong style={{fontSize:15}}>Past Assignments</strong></li>
+                                <li className="collection-header textalign" style={{height:50}}><strong style={{fontSize:15}}>Past Assignments</strong></li>
                                 {past_assignments}
                             </ul>
                             </div>

@@ -47,7 +47,7 @@ class Landing extends Component {
                 <div className="col m4">
                 <div className = "card" style={{height:300}}>
                     <div className="card-image" style={{background:"black", height:100}}>
-                        <img className="imagestyle" src={event.image}/>
+                        <img className="imagestyle" src={event.image} alt=""/>
                     </div>
                     <div className="card-content">
                         <span className="card-title grey-text text-darken-4">{event.title}</span>

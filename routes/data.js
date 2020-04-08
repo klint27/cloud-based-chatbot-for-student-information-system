@@ -76,7 +76,7 @@ module.exports = app => {
                     $gte: now
                 }
             }
-        ).select(select).sort({date: -1}).limit(limit).then( event =>{
+        ).select(select).sort({date: 1}).limit(limit).then( event =>{
             if (!event) {
                 return res.status(404).json({eventnotfound: "event not found"});
             }
@@ -88,47 +88,25 @@ module.exports = app => {
 
         const user_id=req.body.user_id;
 
-        let user_classes= [];
-        User.find({
-            _id : mongoose.Types.ObjectId(user_id)
+        User.findOne({
+            _id : {$in: user_id}
         }).then( user => {
-            user[0].classes.forEach(element =>
-                user_classes.push(
-                    element
-                )
-            );
-
             Classes.find(
                 {
-                    _id : { $in : user_classes}
+                    _id : { $in : user.classes}
                 }
             ).then( classes =>{
                 if (!classes) {
                     return res.status(404).json({classnotfound: "class not found"});
                 }
-
-                let classes_id=[];
-
-                classes.forEach(element =>
-                    classes_id.push(
-                        element._id
-                    )
-                );
-
                 Assignments.find({
-                    class : { $in : classes_id }
+                    class : { $in : user.classes }
                 }).then( assignment =>{
                     if (!assignment) {
                         return res.status(404).json({assignmentnotfound: "assignment not found"});
                     }
                     res.json({classes: classes, assignments: assignment});
                 });
-
-                /*
-                classes.forEach(element =>
-                console.log(element._id)
-                );
-                 */
             });
         });
     });
@@ -155,11 +133,9 @@ module.exports = app => {
                 if (!course) {
                     return res.status(404).json({coursenotfound: "course not found"});
                 }
-                course
+                res.json({class: classes, course: course});
+
             });
-
-            res.json({class: classes, course: course});
-
         })
     })
 

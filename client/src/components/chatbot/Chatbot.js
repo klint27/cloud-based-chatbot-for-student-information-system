@@ -4,9 +4,11 @@ import Cookies from 'universal-cookie';
 import { v4 as uuid } from 'uuid';
 import Message from './Message';
 import '../../components/style_css.css';
+import PropTypes from "prop-types";
+import {connect} from "react-redux";
 
 const Validator = require("validator");
-
+const aesjs = require('aes-js');
 const cookies = new Cookies();
 
 class Chatbot extends Component {
@@ -24,15 +26,33 @@ class Chatbot extends Component {
         this.state = {
             name: "React",
             messages: [],
-            showBot: true
+            showBot: true,
         };
-
-        if (cookies.get('userID') === undefined) {
-            cookies.set('userID', uuid(), { path: '/' });
-        }
-        console.log(cookies.get('userID'));
     }
 
+        getUserID(){
+            function encryptMethod(text) {
+                const key = [6, 3, 13, 7, 14, 4, 2, 16, 12, 11, 9, 5, 15, 10, 1, 8];
+                const textBytes = aesjs.utils.utf8.toBytes(text);
+                const aesCtr = new aesjs.ModeOfOperation.ctr(key, new aesjs.Counter(5));
+                const encryptedBytes = aesCtr.encrypt(textBytes);
+                const encryptedHex = aesjs.utils.hex.fromBytes(encryptedBytes);
+
+                return encryptedHex;
+            }
+
+            if(this.props.auth.isAuthenticated===true){
+
+                return encryptMethod(this.props.auth.user.id);
+
+            }else if (cookies.get('userID') === undefined) {
+
+                cookies.set('userID', uuid(), { path: '/' });
+                return encryptMethod(cookies.get('userID'));
+            }else{
+                return encryptMethod(cookies.get('userID'));
+            }
+        }
 
     async df_text_query (text) {
         let says = {
@@ -46,7 +66,7 @@ class Chatbot extends Component {
         this.setState({ messages: [...this.state.messages, says]});
 
         try {
-            const res = await axios.post('/api/df_text_query',  {text, userID: cookies.get('userID')});
+            const res = await axios.post('/api/df_text_query',  {text, userID: this.getUserID()});
             for (let msg of res.data.fulfillmentMessages) {
 
                 says = {
@@ -78,7 +98,7 @@ class Chatbot extends Component {
 
     async df_event_query(event) {
         try {
-            const res = await axios.post('/api/df_event_query',  {event, userID: cookies.get('userID')});
+            const res = await axios.post('/api/df_event_query',  {event, userID: this.getUserID()});
             for (let msg of res.data.fulfillmentMessages) {
 
 
@@ -106,7 +126,7 @@ class Chatbot extends Component {
     };
 
     componentDidMount() {
-        this.df_event_query('Welcome');
+        this.df_event_query('ConversationInitiation');
     }
 
     componentDidUpdate() {
@@ -147,13 +167,16 @@ class Chatbot extends Component {
     }
 
     render() {
+
         if(this.state.showBot) {
             return (
-                    <div className="chatbotstyle" style={{ minHeight: 200, maxHeight: 500, minWidth:250, right: 20, position: 'fixed', bottom: 0, border: '1px solid lightgray'}}>
+                    <div className="chatbotstyle" style={{ minHeight: 470, maxHeight: 500, minWidth:250, right: 20, position: 'fixed', bottom: 0, border: '1px solid lightgray'}}>
                         <nav>
                             <div className="nav-wrapper red darken-1">
-                                <div className="brand-logo">ChatBot</div>
-                                <ul id="nav-mobile" className="right hide-on-med-and-down">
+                                <ul id="nav-mobile" className="left hide-on-med-and-down">
+                                    <li><div className="brand-logo">ChatBot</div></li>
+                                </ul>
+                                <ul id="nav-mobile" className="right">
                                     <li><a href="/" onClick={this.hide}>Close</a></li>
                                 </ul>
                             </div>
@@ -167,7 +190,7 @@ class Chatbot extends Component {
                             </div>
                         </div>
                         <div className=" col s12" style={{backgroundColor: "white"}}>
-                            <input name="input" style={{margin: 0, paddingLeft: '1%', paddingRight: '1%', width: '98%'}} ref={(input) => { this.talkInput = input; }} placeholder="type a message:"  onKeyPress={this._handleInputKeyPress} id="user_says" type="text"/>
+                            <input name="input" autoComplete="off" style={{margin: 0, paddingLeft: '1%', paddingRight: '1%', width: '98%'}} ref={(input) => { this.talkInput = input; }} placeholder="type a message:" onKeyPress={this._handleInputKeyPress} id="user_says" type="text" maxLength = {256}/>
                         </div>
 
                     </div>
@@ -186,4 +209,10 @@ class Chatbot extends Component {
         }
     }
 }
-export default Chatbot;
+Chatbot.propTypes = {
+    auth: PropTypes.object.isRequired,
+};
+const mapStateToProps = state => ({
+    auth: state.auth,
+});
+export default connect(mapStateToProps)(Chatbot);

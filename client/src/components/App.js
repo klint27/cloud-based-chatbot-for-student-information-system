@@ -14,6 +14,7 @@ import Login from "./pages/Login";
 import Chatbot from "./chatbot/Chatbot";
 import PrivateRoute from "../components/private-route/PrivateRoute";
 import Header from "./Header";
+import './style_css.css'
 
 // Check for token to keep user logged in
 if (localStorage.jwtToken) {
@@ -37,7 +38,7 @@ const App = () => {
         return (
             <Provider store={store}>
                 <BrowserRouter>
-                    <div className="App">
+                    <div className="App appBody">
                         <Chatbot/>
                         <Switch>
                             <Route exact path="/Login" component={Login}/>

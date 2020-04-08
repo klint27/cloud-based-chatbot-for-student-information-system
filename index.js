@@ -24,6 +24,9 @@ mongoose.connect(config.mongoURI, {useUnifiedTopology: true, useNewUrlParser: tr
 //Connection to dialogFlow
 require('./routes/dialogFlowRoutes')(app);
 
+//Connection to fulfillment
+require('./routes/fulfillmentRoutes')(app);
+
 // Passport middleware
 app.use(passport.initialize());
 // Passport config

@@ -1,7 +1,14 @@
+.appBody{
+    min-width:800px;
+    width: auto !important;
+    width:800px;
+}
+
 .textarea {
     border: none;
     resize: none;
     min-height: 30px;
+    box-sizing: content-box;
 }
 
 .indexZ {

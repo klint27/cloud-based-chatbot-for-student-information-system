@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import { MDBNavbar, MDBNavbarBrand, MDBNavbarNav, MDBNavItem} from 'mdbreact';
 import { Link } from 'react-router-dom';
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
@@ -17,7 +16,26 @@ class Header extends Component {
 
     render() {
         return(
+            <div className="navbar-fixed">
+            <nav className="nav-extended" style={{backgroundColor: '#ff3547'}}>
+                <div className="nav-wrapper">
+                    <ul id="nav-mobile" className="left">
+                        <li>{(this.props.auth.isAuthenticated) && <Link to="Dashboard">Dashboard</Link>}</li>
+                        <li><Link to="/">Home</Link></li>
+                        <li><Link to="/Majors">Majors</Link></li>
+                        <li><Link to="/CourseCatalog">Course Catalog</Link></li>
+                        <li><Link to="/Events">Events</Link></li>
+                    </ul>
+                    <ul id="nav-mobile" className="right hide-on-med-and-down">
+                        <li>{(!this.props.auth.isAuthenticated) && <Link to="/Login">Log In</Link>}</li>
+                        <li>{(this.props.auth.isAuthenticated) && <Link to="#" onClick={this.onLogoutClick}>Log Out</Link>}</li>
+                    </ul>
+                </div>
+            </nav>
+            </div>
 
+
+/*
                     <nav>
                         <MDBNavbar style={{backgroundColor: '#ff3547 '}} dark expand={"md"} scrolling fixed="top">
                             <MDBNavbarBrand href="#">
@@ -50,7 +68,7 @@ class Header extends Component {
                                 </MDBNavbarNav>
                         </MDBNavbar>
                     </nav>
-
+*/
         );
     }
 
