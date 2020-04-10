@@ -8,11 +8,6 @@ const AssignmentSchema = new Schema({
         required: true
     },
 
-    description: {
-        type: String,
-        required: false
-    },
-
     grades: [
         {
            value: {
@@ -38,4 +33,4 @@ const AssignmentSchema = new Schema({
 
 });
 
-module.exports = User = mongoose.model("assignments", AssignmentSchema);
+module.exports = mongoose.model("assignments", AssignmentSchema);

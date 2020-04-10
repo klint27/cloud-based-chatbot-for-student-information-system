@@ -25,21 +25,23 @@ class Majors extends Component {
                 this.setState({ posts: data });
             })
             .catch(() => {
-                alert('Error retrieving data!!!');
+                alert('Apologies, but there is a problem with the connection!');
             });
     };
 
     render() {
         let elements=[];
-        this.state.posts.forEach(major =>
-            elements.push(
-                        <div className = "card white" >
+        let counter=0;
+        this.state.posts.forEach(major =>{
+            let key_value=counter++;
+        elements.push(
+                        <div className = "card white" key={key_value.toString()}>
                             <div className = "card-content black-text" >
                                 <span className="card-title">{major.name}</span>
                                 <p>{major.description}</p>
                             </div>
                         </div>
-            )
+            )}
     );
 
         return (

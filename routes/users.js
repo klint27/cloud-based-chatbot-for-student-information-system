@@ -16,7 +16,6 @@ module.exports = app => {
 // @desc Register user
 // @access Public
     app.post('/api/users/register', async (req, res) => {
-        console.log(req.body);
         // Form validation
         const {errors, isValid} = validateRegisterInput(req.body);
 // Check validation

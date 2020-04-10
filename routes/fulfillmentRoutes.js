@@ -9,7 +9,7 @@ const Majors = require('../models/Majors');
 const Courses = require('../models/Courses');
 const Classes = require('../models/Classes');
 const User = require('../models/User');
-const Assignments = require('../models/Assignments')
+const Assignments = require('../models/Assignments');
 
 const dateFormat = require('dateformat');
 
@@ -38,43 +38,55 @@ module.exports = app => {
             if (events != null) {
 
                let responseText=[`The next upcoming event is "${events[0].title}".`,
-                                `We have "${events[0].title}" coming next.`];
+                                `We have "${events[0].title}" coming next.`,
+                                `There is "${events[0].title}" coming.`];
 
                 agent.add(responseText[Math.floor(Math.random() * responseText.length)]);
             }else{
 
-                let responseText=`Unfortunately, there are no events at the moment.`;
+                let responseText=[`Unfortunately, there are no events at the moment.`,
+                                `I am sorry, but there are no events coming.`,
+                                `No events planned for the moment.`];
 
-                agent.add(responseText);
+                agent.add(responseText[Math.floor(Math.random() * responseText.length)]);
 
             }
         }
 
         async function eventDate(agent) {
 
-            let responseText='';
-
             let event = await Events.findOne({title : { $in : agent.parameters.specificEvent}});
             if(event !== null && agent.parameters.specificEvent!==''){
 
-                responseText=`It is going to take place on ${dateFormat(event.date, "mmmm dS")} at ${dateFormat(event.date, "h:MM TT")}`
+                let responseText=[`It is going to take place on ${dateFormat(event.date, "mmmm dS")} at ${dateFormat(event.date, "h:MM TT")}`,
+                            `This event will take place on ${dateFormat(event.date, "mmmm dS")} at ${dateFormat(event.date, "h:MM TT")}`,
+                            `The event is scheduled for ${dateFormat(event.date, "mmmm dS")} at ${dateFormat(event.date, "h:MM TT")}`]
+
+                agent.add(responseText[Math.floor(Math.random() * responseText.length)]);
             }else{
-                responseText=`I am not sure that event is happening at all.`;
+                let responseText=[`I am not sure that event is happening at all.`,
+                            `I don't think this event is planned to happen.`,
+                            `Sadly, this event is not scheduled for the future.`];
+
+                agent.add(responseText[Math.floor(Math.random() * responseText.length)]);
             }
-            agent.add(responseText);
         }
 
         async function findMajor(agent) {
 
-            let responseText = '';
-
             let Major = await Majors.findOne({name : { $in : agent.parameters.specificMajor}});
             if(Major !== null && agent.parameters.specificMajor !==''){
-                responseText=`We do offer ${Major.name}`
+                let responseText=[`We do offer ${Major.name}. You can learn more about it in the Majors section.`,
+                            `There is a major in ${Major.name}. You can check it in the Majors section.`,
+                            `${Major.name} is offered by the university. You can find more information in the Majors section.`];
+
+                agent.add(responseText[Math.floor(Math.random() * responseText.length)]);
             }else{
-                responseText=`I am sorry, but we don't offer this major.`;
+                let responseText=[`I am sorry, but we don't offer this major.`,
+                            `Unfortunately, we don't offer this major at the moment.`];
+
+                agent.add(responseText[Math.floor(Math.random() * responseText.length)]);
             }
-            agent.add(responseText);
         }
 
         async function majorNumber(agent){
@@ -87,7 +99,6 @@ module.exports = app => {
                             `The university offers ${number} majors for now.`];
 
             agent.add(responseText[Math.floor(Math.random() * responseText.length)]);
-
         }
 
         async function showMajors(agent){
@@ -116,14 +127,18 @@ module.exports = app => {
 
             if(course !== null && agent.parameters.specificCourse!==''){
 
-                let responseText = [`This university offers a great course related to ${course.title.substring(8)}.`,
-                    `Sure, there is a course regarding ${course.title.substring(8)}.`,
-                    `We definitely have course about ${course.title.substring(8)}.`];
+                let responseText = [`This university offers a great course related to ${course.title.substring(8)}. You can check it in the Course Catalog.`,
+                    `Sure, there is a course regarding ${course.title.substring(8)}. More information is available in the Course Catalog.`,
+                    `We definitely have course about ${course.title.substring(8)}. You can check more about it in the Course Catalog.`];
 
                 agent.add(responseText[Math.floor(Math.random() * responseText.length)]);
 
             }else{
-                agent.add(`I am sorry, but we don't offer such course.`);
+                let responseText=[`I am sorry, but we don't offer this course.`,
+                    `Unfortunately, we don't offer this course at the moment.`,
+                    `This course is not in our catalog at the moment.`];
+
+                agent.add(responseText[Math.floor(Math.random() * responseText.length)]);
             }
 
         }
@@ -135,10 +150,7 @@ module.exports = app => {
 
             let major= await Majors.findOne({_id : { $in : course.major}});
 
-                console.log(course);
-                console.log(major);
-
-            if(course !== null && agent.parameters.specificCourse !==''){
+            if(major !== null && agent.parameters.specificCourse !==''){
                 let responseText = [`It might be ${major.name}.`,
                     `It should be ${major.name}.`,
                     `I am pretty sure it has to do with ${major.name}.`];
@@ -146,7 +158,7 @@ module.exports = app => {
                 agent.add(responseText[Math.floor(Math.random() * responseText.length)]);
 
             }else{
-                agent.add(`I don't think there is a major related to that.`);
+                agent.add(`I don't think there is a major related with that in our school.`);
             }
 
         }
@@ -165,9 +177,7 @@ module.exports = app => {
 
             }else{
 
-                let user = await User.findOne({_id: {$in: decryptedText}});
-
-                return user;
+                return User.findOne({_id: {$in: decryptedText}});
             }
         }
 
@@ -213,8 +223,6 @@ module.exports = app => {
 
         }
 
-
-
         let intentMap = new Map();
 
         intentMap.set('ShowEvents', showEvents);
@@ -236,6 +244,6 @@ module.exports = app => {
         intentMap.set('OpenAssignments', openAssignments);
 
 
-            await agent.handleRequest(intentMap);
+        await agent.handleRequest(intentMap);
     });
 };

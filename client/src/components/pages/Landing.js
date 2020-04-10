@@ -17,7 +17,6 @@ class Landing extends Component {
 
     componentDidMount() {
         this.getFront();
-
     }
 
     getFront() {
@@ -27,7 +26,7 @@ class Landing extends Component {
                 this.setState({ majors: data });
             })
             .catch(() => {
-                alert('Error retrieving data!!!');
+                alert('Apologies, but there is a problem with the connection!');
             });
 
         axios.post('/api/Events', {limit: 4,select:('title image -_id')})
@@ -36,15 +35,17 @@ class Landing extends Component {
                 this.setState({ events: data });
             })
             .catch(() => {
-                alert('Error retrieving data!!!');
+                alert('Apologies, but there is a problem with the connection!');
             });
     };
 
     render() {
         let event_elements=[];
-        this.state.events.forEach(event =>
-            event_elements.push(
-                <div className="col m4">
+        let counter=0;
+        this.state.events.forEach(event =>{
+            let key_value=counter++;
+        event_elements.push(
+                <div className="col m4" key={key_value.toString()}>
                 <div className = "card" style={{height:300}}>
                     <div className="card-image" style={{background:"black", height:100}}>
                         <img className="imagestyle" src={event.image} alt=""/>
@@ -54,20 +55,21 @@ class Landing extends Component {
                     </div>
                 </div>
                 </div>
-            )
+        )}
         );
 
         let major_elements=[];
-        this.state.majors.forEach(major =>
+        this.state.majors.forEach(major =>{
+            let key_value=counter++;
             major_elements.push(
-                <div className="col m4">
+                <div className="col m4" key={key_value.toString()}>
                     <div className = "card" style={{height:160, maxWidth:300}}>
                         <div className = "card-content" style={{height:100}}>
                             <span className="card-title">{major.name}</span>
                         </div>
                     </div>
                 </div>
-            )
+        )}
         );
 
         return (

@@ -6,4 +6,4 @@ module.exports = {
     googlePrivateKey: JSON.parse(process.env.GOOGLE_PRIVATE_KEY),
     mongoURI: process.env.MONGO_URI,
     secretOrKey: process.env.SECRET_OR_KEY
-}
+};

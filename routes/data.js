@@ -49,7 +49,7 @@ module.exports = app => {
 
     app.post('/api/majors', async (req, res) => {
         const select=req.body.select;
-        Majors.find().select(select).then( major =>{
+        await Majors.find().select(select).then( major =>{
             if (!major) {
                 return res.status(404).json({majornotfound: "major not found"});
             }
@@ -58,7 +58,7 @@ module.exports = app => {
     });
 
     app.post('/api/courses', async (req, res) => {
-        Courses.find().then( course =>{
+        await Courses.find().then( course =>{
             if (!course) {
                 return res.status(404).json({coursenotfound: "course not found"});
             }
@@ -70,7 +70,7 @@ module.exports = app => {
         const now = new Date();
         const select=req.body.select;
         const limit=parseInt(req.body.limit);
-        Events.find(
+        await Events.find(
             {
                 date: {
                     $gte: now
@@ -88,7 +88,7 @@ module.exports = app => {
 
         const user_id=req.body.user_id;
 
-        User.findOne({
+        await User.findOne({
             _id : {$in: user_id}
         }).then( user => {
             Classes.find(
@@ -116,7 +116,7 @@ module.exports = app => {
         const class_name = req.body.className;
 
 
-        Classes.find(
+        await Classes.find(
             {
                 name : { $in : class_name}
             }

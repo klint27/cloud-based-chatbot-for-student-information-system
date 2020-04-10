@@ -27,7 +27,7 @@ class CourseCatalog extends Component {
                 this.setState({ posts: data });
             })
             .catch(() => {
-                alert('Error retrieving data!!!');
+                alert('Apologies, but there is a problem with the connection!');
             });
     };
 
@@ -37,11 +37,13 @@ class CourseCatalog extends Component {
         let ECO=[];
         let BUS=[];
 
-        this.state.posts.forEach((course) => {
+        let counter=0;
 
+        this.state.posts.forEach((course) => {
+            let key_value=counter++;
             function cardCreation(array) {
                 array.push(
-                    <div className = "card white" >
+                    <div className = "card white" key={key_value.toString()}>
                         <div className = "card-content black-text" >
                             <span className="card-title">{course.title}</span>
                             <p>{course.description}</p>
@@ -72,7 +74,7 @@ class CourseCatalog extends Component {
                             this.Tabs = Tabs;
                         }}
                         id="tabs-swipe-demo"
-                        class="tabs tabs-fixed-width"
+                        className="tabs tabs-fixed-width"
                     >
                         <li className="tab"><a className="active" href="#COS">Computer Science</a></li>
                         <li className="tab"><a href="#MAT">Mathematics</a></li>

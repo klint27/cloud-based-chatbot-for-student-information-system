@@ -15,4 +15,4 @@ const ClassSchema = new Schema({
 
 });
 
-module.exports = User = mongoose.model("classes", ClassSchema);
+module.exports = mongoose.model("classes", ClassSchema);

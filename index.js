@@ -4,9 +4,6 @@ const config = require('./config/keys');
 const mongoose = require('mongoose');
 //Required for login
 const passport = require("passport");
-const users = require("./routes/users");
-const data = require("./routes/data");
-
 
 const app = express();
 
@@ -32,10 +29,10 @@ app.use(passport.initialize());
 // Passport config
 require("./config/passport")(passport);
 // Routes to user authentication
-users(app);
+require("./routes/users")(app);
 
 //Routes to data access
-data(app);
+require("./routes/data")(app);
 
 //Values change between development and production
 if (process.env.NODE_ENV === 'production') {

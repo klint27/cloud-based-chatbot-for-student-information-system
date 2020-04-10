@@ -15,6 +15,7 @@ import Chatbot from "./chatbot/Chatbot";
 import PrivateRoute from "../components/private-route/PrivateRoute";
 import Header from "./Header";
 import './style_css.css'
+import NotFound from "./pages/NotFound";
 
 // Check for token to keep user logged in
 if (localStorage.jwtToken) {
@@ -51,6 +52,7 @@ const App = () => {
                             <Route exact path="/Majors" component={Majors}/>
                             <Route exact path="/CourseCatalog" component={CourseCatalog}/>
                             <Route exact path="/Events" component={Events}/>
+                            <Route component={NotFound} />
                         </Switch>
                     </div>
                 </BrowserRouter>

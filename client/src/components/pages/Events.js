@@ -26,16 +26,17 @@ class Events extends Component {
                 this.setState({ posts: data });
             })
             .catch(() => {
-                alert('Error retrieving data!!!');
+                alert('Apologies, but there is a problem with the connection!');
             });
     };
 
     render() {
-
         let elements=[];
+        let counter=0;
         this.state.posts.forEach((event) =>{
+            let key_value=counter++;
             elements.push(
-                    <div className = "card white">
+                    <div className = "card white" key={key_value.toString()}>
                         <div className="card-image" style={{background:"black"}}>
                             <img className="imagestyle" src={event.image} alt=""/>
                         </div>

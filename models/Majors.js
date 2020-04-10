@@ -13,4 +13,4 @@ const MajorSchema = new Schema({
     },
 });
 
-module.exports = User = mongoose.model("majors", MajorSchema);
+module.exports = mongoose.model("majors", MajorSchema);

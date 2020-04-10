@@ -4,7 +4,6 @@ import { connect } from "react-redux";
 import axios from "axios";
 const dateFormat = require('dateformat');
 
-
 class Dashboard extends Component {
 
     constructor() {
@@ -14,7 +13,6 @@ class Dashboard extends Component {
             assignments:[]
         };
     }
-
 
      async getClassesAndAssignments() {
         const {user} = this.props.auth;
@@ -26,19 +24,22 @@ class Dashboard extends Component {
                 this.setState({ assignments: data_assignments });
             })
             .catch(() => {
-                alert('Error retrieving data!!!');
+                alert('Apologies, but there is a problem with the connection!');
             });
     }
 
     componentDidMount() {
         this.getClassesAndAssignments();
-
     }
 
     render() {
-
         let classes_elements=[];
+        let counter=0;
+
+        console.log(this.state.assignments);
+
         this.state.classes.forEach(classes => {
+            let key_value=counter++;
 
             let upcoming_assignments=[];
             let past_assignments=[];
@@ -53,12 +54,12 @@ class Dashboard extends Component {
 
                     if (assignment_date>now) {
                         upcoming_assignments.push(
-                            <li className="collection-item">
+                            <li className="collection-item" key={key_value.toString()}>
                                 <strong style={{color: '#039be5'}}>{assignmentName}</strong>
                                 <br/><span>Dateline: {dateFormat( element.dateline, " h:MM TT, mmmm dS")}</span>
                             </li>);
                     } else{
-                        past_assignments.push(<li className="collection-item">
+                        past_assignments.push(<li className="collection-item" key={key_value.toString()}>
                             <strong style={{color: '#039be5'}}>{assignmentName}</strong>
                             <br/><span>Dateline: {dateFormat( element.dateline, " h:MM TT, mmmm dS")}</span>
                         </li>);
@@ -68,19 +69,19 @@ class Dashboard extends Component {
 
             const className = classes.name;
             classes_elements.push(
-                <div className="col m4">
+                <div className="col m4" key={key_value.toString()}>
                     <div className="card" style={{ alignItems: 'center', padding: 20}}>
                         <div className="titlefit">
                             <div className="textalign"><strong style={{fontSize:25}}>{className}</strong></div>
                             <div className="row">
-                            <ul className="collection with-header ulwidth">
-                                <li className="collection-header textalign" style={{height:50}}><strong style={{fontSize:15}}>Upcomming Assignments</strong></li>
-                                {upcoming_assignments}
-                            </ul>
-                            <ul className="collection with-header ulwidth">
-                                <li className="collection-header textalign" style={{height:50}}><strong style={{fontSize:15}}>Past Assignments</strong></li>
-                                {past_assignments}
-                            </ul>
+                                <ul className="collection with-header ulwidth">
+                                    <li className="collection-header textalign" style={{height:50}}><strong style={{fontSize:15}}>Past Assignments</strong></li>
+                                    {past_assignments}
+                                </ul>
+                                <ul className="collection with-header ulwidth">
+                                    <li className="collection-header textalign" style={{height:50}}><strong style={{fontSize:15}}>Upcomming Assignments</strong></li>
+                                    {upcoming_assignments}
+                                </ul>
                             </div>
                         </div>
                     </div>

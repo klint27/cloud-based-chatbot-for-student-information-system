@@ -27,6 +27,7 @@ class Login extends Component {
             errors: {}
         };
     }
+
     componentWillReceiveProps(nextProps) {
         if (nextProps.auth.isAuthenticated) {
             this.props.history.push("/Dashboard"); // push user to Dashboard when they login
@@ -48,6 +49,7 @@ class Login extends Component {
     onChange = e => {
         this.setState({ [e.target.id]: e.target.value });
     };
+
     onSubmit = e => {
         e.preventDefault();
         const userData = {
@@ -56,6 +58,7 @@ class Login extends Component {
         };
         this.props.loginUser(userData); // since we handle the redirect within our component, we don't need to pass in this.props.history as a parameter
     };
+
     render() {
         const { errors } = this.state;
 
@@ -67,7 +70,7 @@ class Login extends Component {
                      alignItems: "center"
                  }}>
                 <MDBContainer>
-                    <MDBRow center={{alignItems: 'center'}}>
+                    <MDBRow center>
                         <MDBCol md="6">
                             <MDBCard>
                                 <form noValidate onSubmit={this.onSubmit}>
@@ -109,7 +112,7 @@ class Login extends Component {
                                     </div>
                                     <MDBModalFooter>
                                         <div className="font-weight-light">
-                                            <Link to={'/'} class="text-danger"> Go back to the main page</Link>
+                                            <Link to={'/'} className="text-danger"> Go back to the main page</Link>
                                         </div>
                                     </MDBModalFooter>
                                 </MDBCardBody>
