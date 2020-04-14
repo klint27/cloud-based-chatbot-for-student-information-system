@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
-// Create Schema
 const UserSchema = new Schema({
      first_name: {
         type: String,
@@ -26,7 +25,8 @@ const UserSchema = new Schema({
 
     major:[{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'majors'
+        ref: 'majors',
+        required: false
     }],
 
     classes:[{

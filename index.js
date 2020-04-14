@@ -26,8 +26,10 @@ require('./routes/fulfillmentRoutes')(app);
 
 // Passport middleware
 app.use(passport.initialize());
+
 // Passport config
 require("./config/passport")(passport);
+
 // Routes to user authentication
 require("./routes/users")(app);
 

@@ -24,7 +24,7 @@ const sessionPath = sessionClient.sessionPath(config.googleProjectID, config.dia
 
 module.exports = app => {
 
-        app.post('/', async (req, res) => {
+    app.post('/', async (req, res) => {
 
         const agent = new WebhookClient({ request: req, response: res });
 
@@ -35,7 +35,7 @@ module.exports = app => {
 
             let events = await Events.find({date: {$gte: now}}).sort({date: 1});
 
-            if (events != null) {
+            if (events === null) {
 
                let responseText=[`The next upcoming event is "${events[0].title}".`,
                                 `We have "${events[0].title}" coming next.`,
@@ -151,7 +151,7 @@ module.exports = app => {
             let major= await Majors.findOne({_id : { $in : course.major}});
 
             if(major !== null && agent.parameters.specificCourse !==''){
-                let responseText = [`It might be ${major.name}.`,
+                let responseText = [`I think it is ${major.name}.`,
                     `It should be ${major.name}.`,
                     `I am pretty sure it has to do with ${major.name}.`];
 
@@ -166,8 +166,9 @@ module.exports = app => {
         async function checkLogged(){
 
             const key = [6, 3, 13, 7, 14, 4, 2, 16, 12, 11, 9, 5, 15, 10, 1, 8];
+            const key_128_buffer = Buffer.from(key);
             const encryptedBytes = aesjs.utils.hex.toBytes(agent.session.substr(sessionPath.length));
-            const aesCtr = new aesjs.ModeOfOperation.ctr(key, new aesjs.Counter(5));
+            const aesCtr = new aesjs.ModeOfOperation.ctr(key_128_buffer, new aesjs.Counter(5));
             const decryptedBytes = aesCtr.decrypt(encryptedBytes);
             const decryptedText = aesjs.utils.utf8.fromBytes(decryptedBytes);
 
@@ -203,27 +204,134 @@ module.exports = app => {
 
                 if(agent.parameters.specificCourse==='')
                 {
-                    let assignments = await Assignments.find({class: {$in: user.classes}, dateline: {'$gte': now}});
-                    agent.add(`You have ${assignments.length} upcoming deadlines.`);
-                }else{
-                    let course = await Courses.findOne({title : { '$regex' :agent.parameters.specificCourse.substr(0,7), '$options' : 'i' }}).select('title _id');
-                    let classes =await Classes.findOne({course: {$in: course._id}}).select('name');
-                    if(classes!=null){
-                        let assignments = await Assignments.find({class: {$in: classes._id}, dateline: {'$gte': now}});
-                        if(assignments.length !== 0) {
-                            agent.add(`You have ${assignments.length} upcoming deadlines in ${course.title.substr(9)}.`);
-                        }else{
-                            agent.add(`You don't have any upcoming deadlines in ${course.title.substr(9)}.`);
+                    let assignments = await Assignments.find({class: {$in: user.classes}, dateline: {'$gte': now}}).sort({dateline: 1});
+
+                    agent.add(`You have ${assignments.length} upcoming deadlines.`+
+                        ` The closest one is the ${assignments[0].name} at ${dateFormat(assignments[0].dateline, " h:MM TT, mmmm dS")}`);
+                }else {
+                    let course = await Courses.findOne({
+                        title: {
+                            '$regex': agent.parameters.specificCourse.substr(0, 7),
+                            '$options': 'i'
                         }
-                    }else{
+                    }).select('title _id');
+                    if (course != null){
+                        let classes = await Classes.findOne({
+                            course: {$in: course._id},
+                            _id: {$in: user.classes}
+                        }).select('name');
+                    if (classes !== null) {
+                        let assignments = await Assignments.find({class: {$in: classes._id}, dateline: {'$gte': now}}).sort({dateline: 1});
+                        if (assignments.length>1) {
+                            agent.add(`You have ${assignments.length} upcoming assignments in ${course.title.substr(8)}.`+
+                                ` The closest one is ${assignments[0].name} at ${dateFormat(assignments[0].dateline, " h:MM TT, mmmm dS")}`);
+                        } else if(assignments.length===1){
+                            agent.add(`You have only one thing scheduled for this this class. It is the ${assignments[0].name} at ${dateFormat(assignments[0].dateline, " h:MM TT, mmmm dS")}`);
+                        } else if(assignments.length===0){
+                            agent.add(`You don't have any upcoming assignment in ${course.title.substr(8)}.`);
+                        }
+                    } else {
                         agent.add(`Excuse me, but you can't ask for classes you're not enrolled.`);
+                    }
+                }else{
+                        agent.add(`I don't think we offer a class regarding this subject in the first place.`);
                     }
                 }
             }
-
         }
 
-        let intentMap = new Map();
+        async function assignmentGrade(agent) {
+
+            let user = await checkLogged();
+
+            if(user!=null) {
+
+                let course = await Courses.findOne({
+                    title: {
+                        '$regex': agent.parameters.specificCourse.substr(0, 7),
+                        '$options': 'i'
+                    }
+                }).select('title _id');
+
+                let classes = await Classes.findOne({
+                    course: {$in: course._id},
+                    _id: {$in: user.classes}
+                });
+
+                if (classes !== null) {
+
+                        let assignments = await Assignments.findOne({
+                            class: {$in: classes._id},
+                            name: {$regex: agent.parameters.specificAssignment, '$options': 'i'}
+                        }).sort({dateline: 1});
+
+                        if (assignments !== null) {
+
+
+                        let marked_grade = '';
+
+
+                        if (assignments.grades !== undefined && assignments.grades.length !== 0) {
+                            assignments.grades.forEach(grade => {
+                                if (grade.student.toString() === user._id.toString()) {
+                                    marked_grade = grade.value;
+                                }
+                            });
+                            agent.add(`Your grade ${assignments.name} is ${marked_grade}.`);
+                        } else {
+
+                            agent.add(`There isn't a grade yet.`);
+
+                        }
+                        }else{
+                            agent.add(`I can't find this assignment in the ${course.title.substr(8)} class.`)
+                        }
+                    } else {
+
+                        agent.add(`Excuse me, but you can't ask for classes you're not enrolled.`);
+                    }
+            }
+        }
+
+        async function assignmentDateTime(){
+            let user = await checkLogged();
+
+            if(user!=null) {
+
+                let course = await Courses.findOne({
+                    title: {
+                        '$regex': agent.parameters.specificCourse.substr(0, 7),
+                        '$options': 'i'
+                    }
+                }).select('title _id');
+
+                let classes = await Classes.findOne({
+                    course: {$in: course._id},
+                    _id: {$in: user.classes}
+                });
+
+                if (classes !== null) {
+
+                    let assignments = await Assignments.findOne({
+                        class: {$in: classes._id},
+                        name: {$regex: agent.parameters.specificAssignment, '$options': 'i'}
+                    }).sort({dateline: 1});
+
+                    if (assignments !== null) {
+
+                        agent.add(`${assignments.name} is scheduled at ${dateFormat(assignments.dateline, " h:MM TT, mmmm dS")}.`);
+
+                    }else{
+                        agent.add(`I can't find this assignment in the ${course.title.substr(8)} class.`)
+                    }
+                } else {
+
+                    agent.add(`Excuse me, but you can't ask for classes you're not enrolled.`);
+                }
+            }
+        }
+
+            let intentMap = new Map();
 
         intentMap.set('ShowEvents', showEvents);
 
@@ -243,7 +351,11 @@ module.exports = app => {
 
         intentMap.set('OpenAssignments', openAssignments);
 
+        intentMap.set('AssignmentGrade', assignmentGrade);
+
+        intentMap.set('AssignmentDateTime', assignmentDateTime);
 
         await agent.handleRequest(intentMap);
+
     });
 };

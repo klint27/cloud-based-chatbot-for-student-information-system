@@ -20,13 +20,14 @@ class Landing extends Component {
     }
 
     getFront() {
+
         axios.post('/api/majors', {select:('name -_id dateline')})
             .then((response) => {
                 const data = response.data;
                 this.setState({ majors: data });
             })
             .catch(() => {
-                alert('Apologies, but there is a problem with the connection!');
+                alert('Unfortunately, there is a problem with the connection!');
             });
 
         axios.post('/api/Events', {limit: 4,select:('title image -_id')})
@@ -35,7 +36,7 @@ class Landing extends Component {
                 this.setState({ events: data });
             })
             .catch(() => {
-                alert('Apologies, but there is a problem with the connection!');
+                alert('Unfortunately, there is a problem with the connection!');
             });
     };
 
@@ -51,7 +52,7 @@ class Landing extends Component {
                         <img className="imagestyle" src={event.image} alt=""/>
                     </div>
                     <div className="card-content">
-                        <span className="card-title grey-text text-darken-4">{event.title}</span>
+                        <span className="card-title">{event.title}</span>
                     </div>
                 </div>
                 </div>
@@ -95,9 +96,11 @@ class Landing extends Component {
 }
 
 Landing.propTypes = {
-    auth: PropTypes.object.isRequired
+    auth: PropTypes.object.isRequired,
+    errors: PropTypes.object.isRequired
 };
 const mapStateToProps = state => ({
-    auth: state.auth
+    auth: state.auth,
+    errors: state.errors
 });
 export default connect(mapStateToProps)(Landing);

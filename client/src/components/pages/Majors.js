@@ -25,7 +25,7 @@ class Majors extends Component {
                 this.setState({ posts: data });
             })
             .catch(() => {
-                alert('Apologies, but there is a problem with the connection!');
+                alert('Unfortunately, there is a problem with the connection!');
             });
     };
 
@@ -53,9 +53,11 @@ class Majors extends Component {
 }
 
 Majors.propTypes = {
-    auth: PropTypes.object.isRequired
+    auth: PropTypes.object.isRequired,
+    errors: PropTypes.object.isRequired
 };
 const mapStateToProps = state => ({
-    auth: state.auth
+    auth: state.auth,
+    errors: state.errors
 });
 export default connect(mapStateToProps)(Majors);

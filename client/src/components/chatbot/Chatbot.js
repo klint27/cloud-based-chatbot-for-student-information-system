@@ -33,8 +33,9 @@ class Chatbot extends Component {
         getUserID(){
             function encryptMethod(text) {
                 const key = [6, 3, 13, 7, 14, 4, 2, 16, 12, 11, 9, 5, 15, 10, 1, 8];
+                const key_128_buffer = Buffer.from(key);
                 const textBytes = aesjs.utils.utf8.toBytes(text);
-                const aesCtr = new aesjs.ModeOfOperation.ctr(key, new aesjs.Counter(5));
+                const aesCtr = new aesjs.ModeOfOperation.ctr(key_128_buffer, new aesjs.Counter(5));
                 const encryptedBytes = aesCtr.encrypt(textBytes);
                 const encryptedHex = aesjs.utils.hex.fromBytes(encryptedBytes);
 
@@ -210,8 +211,10 @@ class Chatbot extends Component {
 }
 Chatbot.propTypes = {
     auth: PropTypes.object.isRequired,
+    errors: PropTypes.object.isRequired
 };
 const mapStateToProps = state => ({
     auth: state.auth,
+    errors: state.errors
 });
 export default connect(mapStateToProps)(Chatbot);

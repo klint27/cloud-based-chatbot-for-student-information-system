@@ -25,7 +25,6 @@
     "dialogflow": "^1.2.0",
     "dialogflow-fulfillment": "^0.6.1",
     "express": "^4.17.1",
-    "gridfs-stream": "^1.1.1",
     "is-empty": "^1.2.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.9.4",
