@@ -277,7 +277,7 @@ module.exports = app => {
                                     marked_grade = grade.value;
                                 }
                             });
-                            agent.add(`Your grade ${assignments.name} is ${marked_grade}.`);
+                            agent.add(`The ${assignments.name} grade is ${marked_grade}.`);
                         } else {
 
                             agent.add(`There isn't a grade yet.`);
