@@ -35,7 +35,7 @@ module.exports = app => {
 
             let events = await Events.find({date: {$gte: now}}).sort({date: 1});
 
-            if (events === null) {
+            if (events !== null) {
 
                let responseText=[`The next upcoming event is "${events[0].title}".`,
                                 `We have "${events[0].title}" coming next.`,
