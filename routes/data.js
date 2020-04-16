@@ -1,4 +1,3 @@
-const mongoose = require('mongoose');
 const Majors = require('../models/Majors');
 const Courses = require('../models/Courses');
 const Classes = require('../models/Classes');
@@ -85,31 +84,4 @@ module.exports = app => {
         });
     });
 
-    app.post('/api/class', async (req, res) => {
-
-        const class_name = req.body.className;
-
-
-        await Classes.find(
-            {
-                name : { $in : class_name}
-            }
-        ).then( classes => {
-            if (!classes) {
-                return res.status(404).json({classnotfound: "class not found"});
-            }
-            Courses.find(
-                {
-                    _id : { $in : classes[0].course}
-
-                }
-            ).select('description -_id').then( course =>{
-                if (!course) {
-                    return res.status(404).json({coursenotfound: "course not found"});
-                }
-                res.json({class: classes, course: course});
-
-            });
-        })
-    })
 };

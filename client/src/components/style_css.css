@@ -1,7 +1,6 @@
 .appBody{
     min-width:800px;
     width: auto !important;
-    width:800px;
 }
 
 .textarea {
@@ -26,7 +25,6 @@
 .textalign{
     text-align: center;
 }
-
 
 .titlefit{
     height:75%;

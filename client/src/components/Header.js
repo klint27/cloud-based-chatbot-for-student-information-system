@@ -33,46 +33,8 @@ class Header extends Component {
                 </div>
             </nav>
             </div>
-
-
-/*
-                    <nav>
-                        <MDBNavbar style={{backgroundColor: '#ff3547 '}} dark expand={"md"} scrolling fixed="top">
-                            <MDBNavbarBrand href="#">
-                                <i className="fas fa-robot"/>
-                            </MDBNavbarBrand>
-                                <MDBNavbarNav left >
-                                    <MDBNavItem>
-                                        {(this.props.auth.isAuthenticated) && <Link to="Dashboard">Dashboard</Link>}
-                                    </MDBNavItem>
-                                    <MDBNavItem>
-                                        <Link to="/">Home</Link>
-                                    </MDBNavItem>
-                                    <MDBNavItem>
-                                        <Link to="/Majors">Majors</Link>
-                                    </MDBNavItem>
-                                    <MDBNavItem>
-                                        <Link to="/CourseCatalog">Course Catalog</Link>
-                                    </MDBNavItem>
-                                    <MDBNavItem>
-                                        <Link to="/Events">Events</Link>
-                                    </MDBNavItem>
-                                </MDBNavbarNav>
-                                <MDBNavbarNav right>
-                                    <MDBNavItem>
-                                        {(!this.props.auth.isAuthenticated) && <Link to="/Login">Log In</Link>}
-                                    </MDBNavItem>
-                                    <MDBNavItem>
-                                        {(this.props.auth.isAuthenticated) && <Link to="#" onClick={this.onLogoutClick}>Log Out</Link>}
-                                    </MDBNavItem>
-                                </MDBNavbarNav>
-                        </MDBNavbar>
-                    </nav>
-*/
         );
     }
-
-
 }
 
 Header.propTypes = {
