@@ -35,7 +35,7 @@
     "passport-jwt": "^4.0.0",
     "react-textarea-autosize": "^7.1.2",
     "structjson": "^1.0.1",
-    "validator": "^12.2.0"
+    "validator": "^13.7.0"
   },
   "devDependencies": {
     "concurrently": "^5.1.0",
